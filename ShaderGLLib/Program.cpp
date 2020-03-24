@@ -99,7 +99,7 @@ namespace sgl {
 			glGetUniformLocation(program_id_, name.c_str()),
 			1,
 			transpose ? GL_TRUE : GL_FALSE,
-			&mat._11);//verifier si ca plante plus loin
+			&mat._11); //verifier si ca plante plus loin
 
 	}
 

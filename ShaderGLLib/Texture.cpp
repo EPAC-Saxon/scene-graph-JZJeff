@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include <iostream>
 #include <assert.h>
 #include <GL/glew.h>
 #include "Image.h"
@@ -7,56 +8,110 @@ namespace sgl {
 
 	Texture::Texture(const std::string& file)
 	{
-#pragma message ("You have to complete this code!")
+
+		Image img(file);
+		size_ = img.GetSize();
+		assert(img.size() % size_.first == 0);
+		glGenTextures(1, &texture_id_);
+		glBindTexture(GL_TEXTURE_2D, texture_id_);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RGBA8,
+			static_cast<GLsizei>(size_.first),
+			static_cast<GLsizei>(size_.second),
+			0,
+			GL_RGBA,
+			GL_FLOAT,
+			img.data());
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 	Texture::~Texture() 
 	{
-#pragma message ("You have to complete this code!")
+		glDeleteTextures(1, &texture_id_);
 	}
 
 	void Texture::Bind(const unsigned int slot /*= 0*/) const
 	{
-#pragma message ("You have to complete this code!")
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, texture_id_);
 	}
 
 	void Texture::UnBind() const
 	{
-#pragma message ("You have to complete this code!")
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	TextureManager::~TextureManager()
 	{
-#pragma message ("You have to complete this code!")
+		DisableAll();
 	}
 
 	bool TextureManager::AddTexture(
 		const std::string& name, 
 		const std::shared_ptr<sgl::Texture>& texture)
 	{
-#pragma message ("You have to complete this code!")
-		return false;
+		//
+		bool succes = false; 
+		//const std::size_t n = std::size(name_texture_map_);
+		//const auto [it, succes] = name_texture_map_.insert(std::pair<std::string, std::shared_ptr<sgl::Texture>>(name.c_str(), texture));
+		//
+		const auto [it, success] = name_texture_map_.insert(std::pair<std::string, std::shared_ptr<Texture>>(name.c_str(), texture));
+		return success;
 	}
 
+	
 	bool TextureManager::RemoveTexture(const std::string& name)
 	{
-#pragma message ("You have to complete this code!")
-		return false;
+		/*if (name_texture_map_.find(name.c_str) != name_texture_map_.end()) {
+			name_texture_map_.erase(name.c_str);
+			return true;
+		}
+
+		return false;*/
+	
+		name_texture_map_.erase(name_texture_map_.find(name.c_str()));
+		auto search = name_texture_map_.find(name.c_str());
+		if (search != name_texture_map_.end()) {
+			RemoveTexture(name.c_str());
+			return false;
+
+		}
+		return true;
 	}
 
 	void TextureManager::EnableTexture(const std::string& name) const
 	{
-#pragma message ("You have to complete this code!")
+	 //check if existe
+	
+		for (int i = 0; i < name_array_.size(); i++) {
+			if (name_array_[i].empty()) {
+				name_array_[i] = name.c_str();
+			}
+		} 
 	}
 
 	void TextureManager::DisableTexture(const std::string& name) const
 	{
-#pragma message ("You have to complete this code!")
+		try {
+			name_texture_map_.find(name);
+		}
+		catch(int e){
+			throw std::runtime_error("Could not have disable texture");
+		}
 	}
 
 	void TextureManager::DisableAll() const
 	{
-#pragma message ("You have to complete this code!")
+		std::string s;
+		for (int i = 0; i < name_array_.size(); i++) {
+			name_array_[i] = s.empty();
+		}
 	}
 
 } // End namespace sgl.
