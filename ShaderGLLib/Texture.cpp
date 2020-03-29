@@ -58,9 +58,6 @@ namespace sgl {
 	{
 		//
 		bool succes = false; 
-		//const std::size_t n = std::size(name_texture_map_);
-		//const auto [it, succes] = name_texture_map_.insert(std::pair<std::string, std::shared_ptr<sgl::Texture>>(name.c_str(), texture));
-		//
 		const auto [it, success] = name_texture_map_.insert(std::pair<std::string, std::shared_ptr<Texture>>(name.c_str(), texture));
 		return success;
 	}
@@ -68,13 +65,6 @@ namespace sgl {
 	
 	bool TextureManager::RemoveTexture(const std::string& name)
 	{
-		/*if (name_texture_map_.find(name.c_str) != name_texture_map_.end()) {
-			name_texture_map_.erase(name.c_str);
-			return true;
-		}
-
-		return false;*/
-	
 		name_texture_map_.erase(name_texture_map_.find(name.c_str()));
 		auto search = name_texture_map_.find(name.c_str());
 		if (search != name_texture_map_.end()) {
@@ -87,30 +77,41 @@ namespace sgl {
 
 	void TextureManager::EnableTexture(const std::string& name) const
 	{
-	 //check if existe
-	
-		for (int i = 0; i < name_array_.size(); i++) {
-			if (name_array_[i].empty()) {
-				name_array_[i] = name.c_str();
+		auto search = name_texture_map_.find(name.c_str());
+		if (search != name_texture_map_.end()) {
+			for (int i = 0; i < name_array_.size(); i++) {
+				if (name_array_[i] != "") {
+					name_array_[i] = name.c_str();
+				}
 			}
-		} 
+			throw std::runtime_error("No place");
+		}
+		else {
+			throw std::runtime_error("No texture");
+		}
 	}
 
 	void TextureManager::DisableTexture(const std::string& name) const
 	{
-		try {
-			name_texture_map_.find(name);
+		auto search = name_texture_map_.find(name.c_str());
+		if (search != name_texture_map_.end()) {
+			for (int i = 0; i < name_array_.size(); i++) {
+				if (name_array_[i] == name) {
+					name_array_[i].empty();
+				}
+			}
+			throw std::runtime_error("No place");
 		}
-		catch(int e){
-			throw std::runtime_error("Could not have disable texture");
+		else {
+			throw std::runtime_error("No texture");
 		}
+
 	}
 
 	void TextureManager::DisableAll() const
 	{
-		std::string s;
 		for (int i = 0; i < name_array_.size(); i++) {
-			name_array_[i] = s.empty();
+			name_array_[i].empty();
 		}
 	}
 

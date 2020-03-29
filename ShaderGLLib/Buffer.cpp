@@ -36,13 +36,10 @@ namespace sgl {
 		const void* data /*= nullptr*/) const
 	{
 		Bind();
-
-		glBufferData(
-			static_cast<GLenum>(buffer_type_),
+		glBufferData(static_cast<GLenum>(buffer_type_),
 			size,
-			&data,
+			data,
 			GL_STATIC_DRAW);
-
 		UnBind();
 	}
 

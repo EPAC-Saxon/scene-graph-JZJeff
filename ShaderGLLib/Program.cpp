@@ -3,6 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
+/*
+cmake .. -DCMAKE_TOOLCHAIN_FILE="$env:D:\Programms\vcpkg\scripts\buildsy
+stems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
+*/
 namespace sgl {
 
 	Program::Program()
