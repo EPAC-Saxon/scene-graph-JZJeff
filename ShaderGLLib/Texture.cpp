@@ -80,15 +80,18 @@ namespace sgl {
 		auto search = name_texture_map_.find(name.c_str());
 		if (search != name_texture_map_.end()) {
 			for (int i = 0; i < name_array_.size(); i++) {
-				if (name_array_[i] != "") {
+				if (name_array_[i].empty()) {
 					name_array_[i] = name.c_str();
+					search->second->Bind();
+					return;
 				}
 			}
-			throw std::runtime_error("No place"); ///Error in build with SimpleSample
+			//throw std::runtime_error("No place");
 		}
 		else {
 			throw std::runtime_error("No texture");
 		}
+
 	}
 
 	void TextureManager::DisableTexture(const std::string& name) const
@@ -98,6 +101,8 @@ namespace sgl {
 			for (int i = 0; i < name_array_.size(); i++) {
 				if (name_array_[i] == name) {
 					name_array_[i].empty();
+					search->second->UnBind();
+					return;
 				}
 			}
 			throw std::runtime_error("No place");
