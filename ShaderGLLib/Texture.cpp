@@ -84,7 +84,7 @@ namespace sgl {
 					name_array_[i] = name.c_str();
 				}
 			}
-			throw std::runtime_error("No place");
+			throw std::runtime_error("No place"); ///Error in build with SimpleSample
 		}
 		else {
 			throw std::runtime_error("No texture");
